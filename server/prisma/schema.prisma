@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model alergias {
+  Infante_id     Int
+  Ingrediente_id Int
+  infantes       infantes     @relation(fields: [Infante_id], references: [Infantes_id], onDelete: NoAction, onUpdate: NoAction, map: "alergias_ibfk_1")
+  ingredientes   ingredientes @relation(fields: [Ingrediente_id], references: [Ingrediente_id], onDelete: NoAction, onUpdate: NoAction, map: "alergias_ibfk_2")
+
+  @@index([Infante_id], map: "Infante_id")
+  @@index([Ingrediente_id], map: "Ingrediente_id")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model autorizaciones {
+  Representante_id Int?
+  Infante_id       Int?
+  Autorizado       Boolean?
+  infantes         infantes?       @relation(fields: [Infante_id], references: [Infantes_id], onDelete: Cascade, onUpdate: NoAction, map: "autorizaciones_ibfk_3")
+  representantes   representantes? @relation(fields: [Representante_id], references: [Representante_id], onDelete: Cascade, onUpdate: NoAction, map: "autorizaciones_ibfk_4")
+
+  @@unique([Infante_id, Representante_id], map: "authUnique")
+  @@index([Representante_id], map: "Representante_id")
+  @@ignore
+}
+
+model direcciones {
+  Direccion_id   Int              @id @default(autoincrement())
+  Municipio      String           @db.VarChar(30)
+  representantes representantes[]
+}
+
+model infantes {
+  Infantes_id        Int                  @id @default(autoincrement())
+  Matricula          Int
+  Nombre             String?              @db.VarChar(20)
+  A_Paterno          String?              @db.VarChar(20)
+  A_Materno          String?              @db.VarChar(20)
+  Fecha_nacimiento   DateTime             @db.Date
+  Fecha_ingreso      DateTime?            @db.Date
+  Estado_ninio       Boolean?
+  Fecha_baja         DateTime?            @db.Date
+  alergias           alergias[]           @ignore
+  autorizaciones     autorizaciones[]     @ignore
+  patrocinador       patrocinador?
+  platos_consumidos  platos_consumidos[]  @ignore
+  relacionparentesco relacionparentesco[]
+}
+
+model ingredientes {
+  Ingrediente_id      Int                   @id @default(autoincrement())
+  Ingrediente         String?               @unique(map: "Ingrediente") @db.VarChar(20)
+  alergias            alergias[]            @ignore
+  platos_ingredientes platos_ingredientes[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model menus_dias {
+  Menu_id       Int?
+  Dias          Int?
+  menus_numeros menus_numeros? @relation(fields: [Menu_id], references: [Menu_id], onDelete: NoAction, onUpdate: NoAction, map: "menus_dias_ibfk_1")
+
+  @@index([Menu_id], map: "Menu_id")
+  @@ignore
+}
+
+model menus_numeros {
+  Menu_id           Int                 @id @default(autoincrement())
+  Num_menu          Int?                @unique(map: "Num_menu")
+  menus_dias        menus_dias[]        @ignore
+  platos_consumidos platos_consumidos[] @ignore
+  set_menus         set_menus[]
+}
+
+model parentesco {
+  tipoParentesco     Int                  @id @default(autoincrement())
+  parentesco         String               @db.VarChar(20)
+  relacionparentesco relacionparentesco[]
+}
+
+model patrocinador {
+  Pagante_id     Int
+  Infantes_id    Int            @unique(map: "Infantes_id")
+  Cuenta         String         @db.VarChar(10)
+  infantes       infantes       @relation(fields: [Infantes_id], references: [Infantes_id], onDelete: Cascade, onUpdate: NoAction, map: "patrocinador_ibfk_1")
+  representantes representantes @relation(fields: [Pagante_id], references: [Representante_id], onDelete: Cascade, onUpdate: NoAction, map: "patrocinador_ibfk_2")
+
+  @@id([Pagante_id, Infantes_id])
+  @@unique([Pagante_id, Infantes_id], map: "Pagante_Infante_Unique")
+}
+
+model platos {
+  Plato_id            Int                   @id @default(autoincrement())
+  Nombre_plato        String                @unique(map: "Nombre_plato") @db.VarChar(40)
+  platos_ingredientes platos_ingredientes[] @ignore
+  set_menus           set_menus[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model platos_consumidos {
+  Dia           Int
+  Infante_id    Int
+  Menu_id       Int
+  infantes      infantes      @relation(fields: [Infante_id], references: [Infantes_id], onDelete: NoAction, onUpdate: NoAction, map: "platos_consumidos_ibfk_1")
+  menus_numeros menus_numeros @relation(fields: [Menu_id], references: [Menu_id], onDelete: NoAction, onUpdate: NoAction, map: "platos_consumidos_ibfk_2")
+
+  @@index([Infante_id], map: "Infante_id")
+  @@index([Menu_id], map: "Menu_id")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model platos_ingredientes {
+  Plato_id       Int?
+  Ingrediente_id Int?
+  platos         platos?       @relation(fields: [Plato_id], references: [Plato_id], onDelete: Cascade, onUpdate: NoAction, map: "platos_ingredientes_ibfk_1")
+  ingredientes   ingredientes? @relation(fields: [Ingrediente_id], references: [Ingrediente_id], onDelete: Cascade, onUpdate: NoAction, map: "platos_ingredientes_ibfk_2")
+
+  @@unique([Plato_id, Ingrediente_id], map: "Plato_id")
+  @@index([Ingrediente_id], map: "platos_ingredientes_ibfk_2")
+  @@ignore
+}
+
+model relacionparentesco {
+  Infante_id       Int
+  Representante_id Int
+  tipoParentesco   Int?
+  infantes         infantes       @relation(fields: [Infante_id], references: [Infantes_id], onDelete: Cascade, onUpdate: NoAction, map: "relacionparentesco_ibfk_1")
+  representantes   representantes @relation(fields: [Representante_id], references: [Representante_id], onDelete: Cascade, onUpdate: NoAction, map: "relacionparentesco_ibfk_2")
+  parentesco       parentesco?    @relation(fields: [tipoParentesco], references: [tipoParentesco], onDelete: Cascade, onUpdate: NoAction, map: "relacionparentesco_ibfk_3")
+
+  @@id([Infante_id, Representante_id])
+  @@unique([Infante_id, tipoParentesco], map: "no_repeticion_parentesco")
+  @@index([Representante_id], map: "Representante_id")
+  @@index([tipoParentesco], map: "tipoParentesco")
+}
+
+model representantes {
+  Representante_id   Int                  @id @default(autoincrement())
+  Cedula             String               @db.VarChar(15)
+  Nombre             String?              @db.VarChar(50)
+  A_Paterno          String?              @db.VarChar(50)
+  A_Materno          String?              @db.VarChar(50)
+  Calle              String?              @db.VarChar(50)
+  Numero             Int?                 @db.TinyInt
+  DireccionId        Int?
+  Telefono_id        String?              @db.VarChar(15)
+  autorizaciones     autorizaciones[]     @ignore
+  patrocinador       patrocinador[]
+  relacionparentesco relacionparentesco[]
+  direcciones        direcciones?         @relation(fields: [DireccionId], references: [Direccion_id], onDelete: NoAction, onUpdate: NoAction, map: "representantes_ibfk_1")
+
+  @@index([DireccionId], map: "DireccionId")
+}
+
+model set_menus {
+  id            Int            @id @default(autoincrement())
+  Menu_id       Int?
+  Plato_id      Int?
+  menus_numeros menus_numeros? @relation(fields: [Menu_id], references: [Menu_id], onDelete: Cascade, onUpdate: NoAction, map: "set_menus_ibfk_1")
+  platos        platos?        @relation(fields: [Plato_id], references: [Plato_id], onDelete: Cascade, onUpdate: NoAction, map: "set_set_menus_ibfk_2")
+
+  @@unique([Menu_id, Plato_id], map: "Menu_id")
+  @@index([Plato_id], map: "set_set_menus_ibfk_2")
+}
