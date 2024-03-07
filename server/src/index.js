@@ -12,11 +12,11 @@ app.use(express.json());
 app.use(cors());
 
 //Routing
-app.use("api/v1", reprsentantesRoutes);
+app.use("/api/v1", reprsentantesRoutes);
 app.get("/", (req, res) => res.send("Hello world 👋"));
 
 //Middlewares
-app.use(errorHandlingAfterRoute());
+app.use(errorHandlingAfterRoute);
 
 //Server
 const PORT = process.env.PORT || 3000;
