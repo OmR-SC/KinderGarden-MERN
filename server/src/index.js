@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const reprsentantesRoutes = require("./v1/routes/representantesRoutes.js");
 
@@ -14,5 +15,5 @@ app.use("api/v1", reprsentantesRoutes);
 app.get("/", (req, res) => res.send("Hello world 👋"));
 
 //Server
-const PORT = process.env.PORT || 3308;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`The server is listening at PORT #${PORT}`));

@@ -1,3 +1,5 @@
+const { prisma } = require("../service/prisma");
+
 const getRepresentantes = async (req, res) => {};
 
 const getRepresentante = async (req, res) => {};
