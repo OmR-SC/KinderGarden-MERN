@@ -2,7 +2,16 @@ const { prisma } = require("../service/prisma.js");
 
 const getRepresentantes = async (req, res, next) => {
   try {
-    const response = await prisma.representantes.findMany();
+    const response = await prisma.representantes.findMany({
+      include: {
+        patrocinador: {
+          include: {
+            infantes: true,
+          },
+        },
+        relacionparentesco: true,
+      },
+    });
     res.status(200).json({
       status: "OK",
       data: { representantes: response },
@@ -18,6 +27,14 @@ const getRepresentante = async (req, res, next) => {
       where: {
         Representante_id: parseInt(req.params.id),
       },
+      include: {
+        patrocinador: {
+          include: {
+            infantes: true,
+          },
+        },
+        relacionparentesco: true,
+      },
     });
     res.status(200).json({
       status: "OK",
@@ -28,7 +45,8 @@ const getRepresentante = async (req, res, next) => {
   }
 };
 
-const postRepresentante = async (req, res) => {};
+const postRepresentante = async (req, res, next) => {
+};
 
 const putRepresentante = async (req, res) => {};
 
