@@ -13,7 +13,9 @@ const getRepresentantes = async (req, res, next) => {
             infantes: true,
           },
         },
-        relacionparentesco: true,
+        relacionparentesco: {
+          include: {parentesco : true},
+        },
       },
     });
     res.status(200).json({
@@ -37,7 +39,9 @@ const getRepresentante = async (req, res, next) => {
             infantes: true,
           },
         },
-        relacionparentesco: true,
+        relacionparentesco: {
+          include: {parentesco : true},
+        },
       },
     });
     res.status(200).json({
