@@ -1,4 +1,5 @@
-const { prisma } = require("../service/prisma.js");
+const { prisma } = require("../config/prisma.js");
+const {insertRepresentante} = require("../service/representantesService.js");
 
 const getRepresentantes = async (req, res, next) => {
   try {
@@ -46,6 +47,19 @@ const getRepresentante = async (req, res, next) => {
 };
 
 const postRepresentante = async (req, res, next) => {
+  //TODO: add validation
+
+  //modelo o interfaz de representante
+
+  try {
+    const response = await insertRepresentante(req.body);
+    res.status(200).json({
+      status: "OK",
+      data: { representante: response },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const putRepresentante = async (req, res) => {};
