@@ -114,4 +114,15 @@ const updateRepresentante = async (
   return response;
 };
 
-module.exports = { insertRepresentante, updateRepresentante };
+const removeRepresentante = async (id) =>
+  await prisma.representantes.delete({
+    where: {
+      Representante_id: id,
+    },
+  });
+
+module.exports = {
+  insertRepresentante,
+  updateRepresentante,
+  removeRepresentante,
+};

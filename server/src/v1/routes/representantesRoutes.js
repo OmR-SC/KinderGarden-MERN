@@ -13,6 +13,6 @@ routes.get("/representantes", getRepresentantes);
 routes.get("/representantes/:id", getRepresentante);
 routes.post("/representantes/", postRepresentante);
 routes.put("/representantes/:id", putRepresentante);
-routes.delete("/representantes/", deleteRepresentante);
+routes.delete("/representantes/:id", deleteRepresentante);
 
 module.exports = routes;
