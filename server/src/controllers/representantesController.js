@@ -1,5 +1,8 @@
 const { prisma } = require("../config/prisma.js");
-const {insertRepresentante} = require("../service/representantesService.js");
+const {
+  insertRepresentante,
+  updateRepresentante,
+} = require("../service/representantesService.js");
 
 const getRepresentantes = async (req, res, next) => {
   try {
@@ -62,7 +65,15 @@ const postRepresentante = async (req, res, next) => {
   }
 };
 
-const putRepresentante = async (req, res) => {};
+const putRepresentante = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+    const response = await updateRepresentante(req.body, id);
+    res.status(200).json({ status: "OK", data: { representante: response } });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const deleteRepresentante = async (req, res) => {};
 
