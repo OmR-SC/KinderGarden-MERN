@@ -2,6 +2,7 @@ const { prisma } = require("../config/prisma.js");
 const {
   insertRepresentante,
   updateRepresentante,
+  removeRepresentante,
 } = require("../service/representantesService.js");
 
 const getRepresentantes = async (req, res, next) => {
@@ -79,7 +80,15 @@ const putRepresentante = async (req, res, next) => {
   }
 };
 
-const deleteRepresentante = async (req, res) => {};
+const deleteRepresentante = async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+    const response = await removeRepresentante(id);
+    res.status(200).json({ status: "OK", data: { representanteDeleted: response } });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getRepresentantes,
