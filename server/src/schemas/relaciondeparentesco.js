@@ -18,6 +18,9 @@
  *        $ref: "#/components/schemas/Parentesco"
  *     CreateRelacionParentesco:
  *      type: object
+ *      required:
+ *        - Infante_id
+ *        - tipoParentesco
  *      properties:
  *       Infante_id:
  *         type: integer
@@ -25,6 +28,10 @@
  *         type: integer 
  *     UpdateRelacionParentesco:
  *      type: object
+ *      required:
+ *       - Representante_id
+ *       - Infante_id
+ *       - tipoParentesco
  *      properties:
  *       Representante_id:
  *         type: integer
