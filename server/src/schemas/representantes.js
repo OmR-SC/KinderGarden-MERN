@@ -83,6 +83,7 @@
  *       required:
  *         - Cedula
  *         - Nombre
+ *         - Telefono_id
  *       properties:
  *         Cedula:
  *           type: string
@@ -114,6 +115,7 @@
  *         - Representante_id
  *         - Cedula
  *         - Nombre
+ *         - Telefono_id
  *       properties:
  *         Representante_id:
  *           type: integer
@@ -136,7 +138,7 @@
  *         patrocinador:
  *           type: array
  *           items:
- *             $ref: "#/components/schemas/CreatePatrocinador"
+ *             $ref: "#/components/schemas/UpdatePatrocinador"
  *         relacionparentesco:
  *           type: array
  *           items:
