@@ -1,5 +1,36 @@
 const { prisma } = require("../config/prisma");
 
+const getAllRepresentantes = async () => {
+  return await prisma.representantes.findMany({
+    include: {
+      patrocinador: {
+        include: {
+          infantes: true,
+        },
+      },
+      relacionparentesco: {
+        include: { parentesco: true },
+      },
+    },
+  });
+};
+const getOneRepresentante = async (id) => {
+  return await prisma.representantes.findUniqueOrThrow({
+    where: {
+      Representante_id: parseInt(id),
+    },
+    include: {
+      patrocinador: {
+        include: {
+          infantes: true,
+        },
+      },
+      relacionparentesco: {
+        include: { parentesco: true },
+      },
+    },
+  });
+};
 const insertRepresentante = async ({
   Cedula,
   Nombre,
@@ -19,7 +50,11 @@ const insertRepresentante = async ({
           infantes: true,
         },
       },
-      relacionparentesco: true,
+      relacionparentesco: {
+        include: {
+          parentesco: true,
+        },
+      },
     },
     data: {
       Cedula,
@@ -64,7 +99,11 @@ const updateRepresentante = async (
           infantes: true,
         },
       },
-      relacionparentesco: true,
+      relacionparentesco: {
+        include: {
+          parentesco: true,
+        },
+      },
     },
     where: { Representante_id: id },
     data: {
@@ -122,6 +161,8 @@ const removeRepresentante = async (id) =>
   });
 
 module.exports = {
+  getAllRepresentantes,
+  getOneRepresentante,
   insertRepresentante,
   updateRepresentante,
   removeRepresentante,
