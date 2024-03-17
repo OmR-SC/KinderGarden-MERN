@@ -64,8 +64,11 @@ routes.get("/representantes", getRepresentantes);
  *     description: Get one representante
  *     parameters:
  *        - in: path
- *          name : Representante_id
+ *          name: Representante_id
  *          description: The id of representante
+ *          required: true
+ *          schema:
+ *           type: integer
  *     tags:
  *       - Representantes
  *     responses:
@@ -164,6 +167,9 @@ routes.post("/representantes/", postRepresentante);
  *        - in: path
  *          name : Representante_id
  *          description: The id of representante
+ *          required: true
+ *          schema:
+ *           type: integer
  *      tags:
  *       - Representantes
  *      requestBody:
@@ -219,6 +225,9 @@ routes.put("/representantes/:id", putRepresentante);
  *        - in: path
  *          name: Representante_id
  *          description: The id of representante
+ *          required: true
+ *          schema:
+ *           type: integer
  *      responses:
  *       200:
  *         description: OK
