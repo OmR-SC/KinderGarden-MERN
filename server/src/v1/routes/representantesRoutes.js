@@ -6,6 +6,11 @@ const {
   putRepresentante,
   deleteRepresentante,
 } = require("../../controllers/representantesController");
+const {
+  validatorCreateRepresentante,
+  validatorUpdateRepresentante,
+  validatorIdParameterRepresentante,
+} = require("../../validators/representante");
 
 const routes = Router();
 
@@ -106,7 +111,11 @@ routes.get("/representantes", getRepresentantes);
  *
  */
 
-routes.get("/representantes/:id", getRepresentante);
+routes.get(
+  "/representantes/:id",
+  validatorIdParameterRepresentante,
+  getRepresentante
+);
 
 /**
  * @openapi
@@ -155,7 +164,11 @@ routes.get("/representantes/:id", getRepresentante);
  *                     type: string
  *                     example: "error message"
  */
-routes.post("/representantes/", postRepresentante);
+routes.post(
+  "/representantes/",
+  validatorCreateRepresentante,
+  postRepresentante
+);
 
 /**
  * @openapi
@@ -211,7 +224,11 @@ routes.post("/representantes/", postRepresentante);
  *                     type: string
  *                     example: "error message"
  */
-routes.put("/representantes/:id", putRepresentante);
+routes.put(
+  "/representantes/:id",
+  validatorUpdateRepresentante,
+  putRepresentante
+);
 
 /**
  * @openapi
@@ -262,6 +279,10 @@ routes.put("/representantes/:id", putRepresentante);
  *                     example: "error message"
  *
  */
-routes.delete("/representantes/:id", deleteRepresentante);
+routes.delete(
+  "/representantes/:id",
+  validatorIdParameterRepresentante,
+  deleteRepresentante
+);
 
 module.exports = routes;
