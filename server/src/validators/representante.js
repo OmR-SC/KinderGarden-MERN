@@ -1,7 +1,13 @@
 const { check, body, param } = require("express-validator");
 const { validateResult } = require("../utils/handleValidator");
-const { validatorUpdatePatrocinador } = require("./patrocinador");
-const { validatorUpdateRelacionParentesco } = require("./relacionparentesco");
+const {
+  validatorCreatePatrocinador,
+  validatorUpdatePatrocinador,
+} = require("./patrocinador");
+const {
+  validatorCreateRelacionParentesco,
+  validatorUpdateRelacionParentesco,
+} = require("./relacionparentesco");
 const { validaCedula } = require("../utils/cedulaValidator");
 
 const validatorCreateRepresentante = [
@@ -45,20 +51,19 @@ const validatorCreateRepresentante = [
     .isMobilePhone()
     .withMessage("Insert a valid phone number"),
 
-  check("patrocinador.*.Infantes_id")
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage("The value cannot be zero or negative"),
-  check("patrocinador.*.Cuenta").optional().notEmpty().isString(),
+  async (req, res, next) => {
+    if (req.body.patrocinador?.length > 0) {
+      await validatorCreatePatrocinador(req, res, next);
+    }
+    next();
+  },
+  async (req, res, next) => {
+    if (req.body.relacionparentesco?.length > 0) {
+      await validatorCreateRelacionParentesco(req, res, next);
+    }
+    next();
+  },
 
-  check("relacionparentesco.*.Infante_id")
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage("The value cannot be zero or negative"),
-  check("relacionparentesco.*.tipoParentesco")
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage("The value cannot be zero or negative"),
   (req, res, next) => {
     validateResult(req, res, next);
   },

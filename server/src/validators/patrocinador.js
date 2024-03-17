@@ -1,5 +1,25 @@
 const { body } = require("express-validator");
 
+const validatorCreatePatrocinador = async (req, res, next) => {
+  await body("patrocinador.*.Infantes_id")
+    .notEmpty()
+    .bail()
+    .withMessage("You must use the field 'Infantes_id'")
+    .isNumeric()
+    .bail()
+    .withMessage("Must be a number")
+    .isInt({ min: 1 })
+    .withMessage("The value cannot be zero or negative")
+    .run(req),
+    await body("patrocinador.*.Cuenta")
+      .notEmpty()
+      .bail()
+      .withMessage("You must use the field 'Cuenta'")
+      .isString()
+      .withMessage("'Cuenta' should be a string'")
+      .run(req);
+};
+
 const validatorUpdatePatrocinador = async (req, res, next) => {
   await body("patrocinador.*.Pagante_id")
     .notEmpty()
@@ -39,4 +59,4 @@ const validatorUpdatePatrocinador = async (req, res, next) => {
       .run(req);
 };
 
-module.exports = { validatorUpdatePatrocinador };
+module.exports = { validatorUpdatePatrocinador, validatorCreatePatrocinador };

@@ -1,5 +1,28 @@
 const { body } = require("express-validator");
 
+const validatorCreateRelacionParentesco = async (req, res, next) => {
+  await body("relacionparentesco.*.Infante_id")
+    .notEmpty()
+    .bail()
+    .withMessage("You must use the field 'Infante_id'")
+    .isNumeric()
+    .bail()
+    .withMessage("Must be a number")
+    .isInt({ min: 1 })
+    .withMessage("The value cannot be zero or negative")
+    .run(req),
+    await body("relacionparentesco.*.tipoParentesco")
+      .notEmpty()
+      .bail()
+      .withMessage("You must use the field 'tipoParentesco'")
+      .isNumeric()
+      .bail()
+      .withMessage("Must be a number")
+      .isInt({ min: 1 })
+      .withMessage("The value cannot be zero or negative")
+      .run(req);
+};
+
 const validatorUpdateRelacionParentesco = async (req, res, next) => {
   await body("relacionparentesco.*.Representante_id")
     .notEmpty()
@@ -42,4 +65,7 @@ const validatorUpdateRelacionParentesco = async (req, res, next) => {
       .run(req);
 };
 
-module.exports = { validatorUpdateRelacionParentesco };
+module.exports = {
+  validatorUpdateRelacionParentesco,
+  validatorCreateRelacionParentesco,
+};
