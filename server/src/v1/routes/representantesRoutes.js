@@ -41,21 +41,12 @@ const routes = Router();
  *                      items:
  *                        $ref: "#/components/schemas/Representantes"
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
 
@@ -93,21 +84,19 @@ routes.get("/representantes", getRepresentantes);
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
  *       404:
- *         description: An error ocurred
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
+ *       500:
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
 
@@ -147,22 +136,28 @@ routes.get(
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: Validation result
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
+ * 
+ *       404:
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  */
 routes.post(
   "/representantes/",
@@ -207,22 +202,28 @@ routes.post(
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: Validation result
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
+ *       404:
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
+ * 
  */
 routes.put(
   "/representantes/:id",
@@ -262,21 +263,19 @@ routes.put(
  *                    representanteDeleted:
  *                     $ref: "#/components/schemas/Representante"
  *       404:
- *         description: An error ocurred
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
+ *       500:
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
 routes.delete(
