@@ -155,6 +155,18 @@ const updateRepresentante = async (
 
 const removeRepresentante = async (id) =>
   await prisma.representantes.delete({
+    include: {
+      patrocinador: {
+        include: {
+          infantes: true,
+        },
+      },
+      relacionparentesco: {
+        include: {
+          parentesco: true,
+        },
+      },
+    },
     where: {
       Representante_id: id,
     },
