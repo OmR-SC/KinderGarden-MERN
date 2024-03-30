@@ -137,7 +137,7 @@ routes.get(
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
  *       403:
- *         description: Validation result
+ *         description: "Error: Forbidden"
  *         content:
  *            application/json:
  *              schema:
@@ -203,7 +203,7 @@ routes.post(
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
  *       403:
- *         description: Validation result
+ *         description: "Error: Forbidden"
  *         content:
  *            application/json:
  *              schema:
