@@ -130,16 +130,20 @@ const validatorUpdateRepresentante = [
   param("id")
     .notEmpty()
     .bail()
-    .withMessage("You must use the field 'Representante_id'")
+    .withMessage("You must use the param 'Representante_id'")
     .toInt()
+    .bail()
+    .withMessage("The param 'Representante_id' should be a number")
     .isInt({ min: 1 })
     .bail()
-    .withMessage("The value cannot be zero or negative"),
+    .withMessage("The param 'Representante_id' cannot be zero or negative"),
   check("Representante_id")
     .notEmpty()
+    .bail()
+    .withMessage("You must use the field 'Representante_id'")
     .isInt({ min: 1 })
     .bail()
-    .withMessage("The value cannot be zero or negative")
+    .withMessage("The field 'Representante_id' cannot be zero or negative")
     .custom((id, { req }) => {
       if (req.params.id != id) {
         throw new Error(
@@ -264,7 +268,7 @@ const validatorIdParameterRepresentante = [
   param("id")
     .notEmpty()
     .bail()
-    .withMessage("You should use the field 'Representante_id'")
+    .withMessage("You should use the param 'Representante_id'")
     .toInt()
     .bail()
     .withMessage("The param 'Representante_id' should be a number")
