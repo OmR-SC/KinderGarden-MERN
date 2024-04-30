@@ -7,6 +7,8 @@
  *      properties:
  *       status:
  *        type: string
+ *        enum: [FAILED]
+ *        description: "The status of the response."
  *        example: FAILED
  *       data:
  *         type: object

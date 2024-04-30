@@ -10,7 +10,7 @@
  *           example: 1
  *         Cedula:
  *           type: string
- *           example: 001786777797
+ *           example: 40225999348
  *         Nombre:
  *           type: string
  *           example: Jose
@@ -48,7 +48,7 @@
  *           example: 1
  *         Cedula:
  *           type: string
- *           example: 001786777797
+ *           example: 40225999348
  *         Nombre:
  *           type: string
  *           example: Jose

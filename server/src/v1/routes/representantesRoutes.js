@@ -83,6 +83,13 @@ routes.get("/representantes", getRepresentantes);
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
  *       404:
  *         description: "Error: Not Found"
  *         content:
@@ -136,6 +143,12 @@ routes.get(
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       400:
+ *         description: "Error: Bad Request"
+ *         content:
+ *           application/json:
+ *            schema:
+ *             $ref: "#/components/schemas/Error"
  *       403:
  *         description: "Error: Forbidden"
  *         content:
@@ -262,6 +275,13 @@ routes.put(
  *                   properties:
  *                    representanteDeleted:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
  *       404:
  *         description: "Error: Not Found"
  *         content:
