@@ -6,6 +6,11 @@ const {
   putRepresentante,
   deleteRepresentante,
 } = require("../../controllers/representantesController");
+const {
+  validatorCreateRepresentante,
+  validatorUpdateRepresentante,
+  validatorIdParameterRepresentante,
+} = require("../../validators/representante");
 
 const routes = Router();
 
@@ -36,21 +41,12 @@ const routes = Router();
  *                      items:
  *                        $ref: "#/components/schemas/Representantes"
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
 
@@ -95,25 +91,27 @@ routes.get("/representantes", getRepresentantes);
  *                type: object
  *                $ref: "#/components/schemas/ValidationError"
  *       404:
- *         description: An error ocurred
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
+ *       500:
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
 
-routes.get("/representantes/:id", getRepresentante);
+routes.get(
+  "/representantes/:id",
+  validatorIdParameterRepresentante,
+  getRepresentante
+);
 
 /**
  * @openapi
@@ -145,9 +143,6 @@ routes.get("/representantes/:id", getRepresentante);
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
-<<<<<<< Updated upstream
-=======
- *      
  *       400:
  *         description: "Error: Bad Request"
  *         content:
@@ -169,25 +164,19 @@ routes.get("/representantes/:id", getRepresentante);
  *              schema:
  *                type: object
  *                $ref: "#/components/schemas/Error"
->>>>>>> Stashed changes
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  */
-routes.post("/representantes/", postRepresentante);
+routes.post(
+  "/representantes/",
+  validatorCreateRepresentante,
+  postRepresentante
+);
 
 /**
  * @openapi
@@ -226,24 +215,34 @@ routes.post("/representantes/", postRepresentante);
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
+ *       404:
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
  *       500:
- *         description: An error ocurred
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
+ * 
  */
-routes.put("/representantes/:id", putRepresentante);
+routes.put(
+  "/representantes/:id",
+  validatorUpdateRepresentante,
+  putRepresentante
+);
 
 /**
  * @openapi
@@ -284,23 +283,25 @@ routes.put("/representantes/:id", putRepresentante);
  *                type: object
  *                $ref: "#/components/schemas/ValidationError"
  *       404:
- *         description: An error ocurred
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
+ *       500:
+ *         description: "Error: Internal Server Error"
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 status:
- *                    type: string
- *                    example: FAILED
- *                 data:
- *                   type: object
- *                   properties:
- *                    error:
- *                     type: string
- *                     example: "error message"
+ *               $ref: "#/components/schemas/Error"
  *
  */
-routes.delete("/representantes/:id", deleteRepresentante);
+routes.delete(
+  "/representantes/:id",
+  validatorIdParameterRepresentante,
+  deleteRepresentante
+);
 
 module.exports = routes;

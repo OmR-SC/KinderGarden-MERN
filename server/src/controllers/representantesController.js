@@ -3,22 +3,13 @@ const {
   insertRepresentante,
   updateRepresentante,
   removeRepresentante,
+  getAllRepresentantes,
+  getOneRepresentante,
 } = require("../service/representantesService.js");
 
 const getRepresentantes = async (req, res, next) => {
   try {
-    const response = await prisma.representantes.findMany({
-      include: {
-        patrocinador: {
-          include: {
-            infantes: true,
-          },
-        },
-        relacionparentesco: {
-          include: {parentesco : true},
-        },
-      },
-    });
+    const response = await getAllRepresentantes();
     res.status(200).json({
       status: "OK",
       data: { representantes: response },
@@ -30,21 +21,7 @@ const getRepresentantes = async (req, res, next) => {
 
 const getRepresentante = async (req, res, next) => {
   try {
-    const response = await prisma.representantes.findUniqueOrThrow({
-      where: {
-        Representante_id: parseInt(req.params.id),
-      },
-      include: {
-        patrocinador: {
-          include: {
-            infantes: true,
-          },
-        },
-        relacionparentesco: {
-          include: {parentesco : true},
-        },
-      },
-    });
+    const response = await getOneRepresentante(req.params.id);
     res.status(200).json({
       status: "OK",
       data: { representante: response },
@@ -55,10 +32,6 @@ const getRepresentante = async (req, res, next) => {
 };
 
 const postRepresentante = async (req, res, next) => {
-  //TODO: add validation
-
-  //modelo o interfaz de representante
-
   try {
     const response = await insertRepresentante(req.body);
     res.status(200).json({
@@ -84,7 +57,9 @@ const deleteRepresentante = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
     const response = await removeRepresentante(id);
-    res.status(200).json({ status: "OK", data: { representanteDeleted: response } });
+    res
+      .status(200)
+      .json({ status: "OK", data: { representanteDeleted: response } });
   } catch (error) {
     next(error);
   }
