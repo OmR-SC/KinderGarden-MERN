@@ -87,6 +87,13 @@ routes.get("/representantes", getRepresentantes);
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
  *       404:
  *         description: An error ocurred
  *         content:
@@ -138,6 +145,31 @@ routes.get("/representantes/:id", getRepresentante);
  *                   properties:
  *                    representante:
  *                     $ref: "#/components/schemas/Representante"
+<<<<<<< Updated upstream
+=======
+ *      
+ *       400:
+ *         description: "Error: Bad Request"
+ *         content:
+ *           application/json:
+ *            schema:
+ *             $ref: "#/components/schemas/Error"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
+ * 
+ *       404:
+ *         description: "Error: Not Found"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/Error"
+>>>>>>> Stashed changes
  *       500:
  *         description: An error ocurred
  *         content:
@@ -244,6 +276,13 @@ routes.put("/representantes/:id", putRepresentante);
  *                   properties:
  *                    representanteDeleted:
  *                     $ref: "#/components/schemas/Representante"
+ *       403:
+ *         description: "Error: Forbidden"
+ *         content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                $ref: "#/components/schemas/ValidationError"
  *       404:
  *         description: An error ocurred
  *         content:
