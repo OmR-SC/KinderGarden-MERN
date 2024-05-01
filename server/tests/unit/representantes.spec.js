@@ -125,10 +125,6 @@ describe("representantes", () => {
         it("should return all representantes", async () => {
           representanteService.getAllRepresentantes.mockResolvedValueOnce([]);
 
-          representanteService.getAllRepresentantes.mockResolvedValueOnce([
-            representantePayload,
-          ]);
-
           await getRepresentantes(mockRequest, mockResponse, mockNext);
           expect(mockNext).not.toHaveBeenCalled();
           expect(mockResponse.status).toHaveBeenCalled();
@@ -143,6 +139,9 @@ describe("representantes", () => {
           mockResponse.json.mockClear();
           mockNext.mockClear();
 
+          representanteService.getAllRepresentantes.mockResolvedValueOnce([
+            representantePayload,
+          ]);
           await getRepresentantes(mockRequest, mockResponse, mockNext);
           expect(mockNext).not.toHaveBeenCalled();
           expect(mockResponse.status).toHaveBeenCalled();
@@ -490,9 +489,9 @@ describe("representantes", () => {
             new Error("Prisma Error")
           );
 
-          await expect(insertRepresentante(Number.MAX_VALUE)).rejects.toThrow(
-            new Error("Prisma Error")
-          );
+          await expect(
+            insertRepresentante(Number.MAX_SAFE_INTEGER)
+          ).rejects.toThrow(new Error("Prisma Error"));
           expect(prisma.representantes.create).toHaveBeenCalled();
           expect(prisma.representantes.create).toHaveBeenCalledWith(
             expect.objectContaining({
