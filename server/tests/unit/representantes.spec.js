@@ -70,7 +70,7 @@ describe("representantes", () => {
 
     const { validateResult } = require("../../src/utils/handleValidator");
 
-    it("GET /representantes/:id should call validationResult function", () => {
+    it("GET /representantes/:id should call validateResult function", () => {
       validatorIdParameterRepresentante[1](mockRequest, mockResponse, mockNext);
 
       expect(validateResult).toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe("representantes", () => {
       );
     });
 
-    it("POST /representantes/ should call validationResult function", () => {
+    it("POST /representantes/ should call validateResult function", () => {
       validatorCreateRepresentante[10](mockRequest, mockResponse, mockNext);
 
       expect(validateResult).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe("representantes", () => {
       );
     });
 
-    it("PUT /representantes/:id should call validationResult function", () => {
+    it("PUT /representantes/:id should call validateResult function", () => {
       validatorUpdateRepresentante[12](mockRequest, mockResponse, mockNext);
 
       expect(validateResult).toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe("representantes", () => {
       );
     });
 
-    it("DELETE /representantes/:id should call validationResult function", () => {
+    it("DELETE /representantes/:id should call validateResult function", () => {
       validatorIdParameterRepresentante[1](mockRequest, mockResponse, mockNext);
 
       expect(validateResult).toHaveBeenCalled();
@@ -162,8 +162,9 @@ describe("representantes", () => {
             new Error()
           );
 
-          await expect(getRepresentantes(mockRequest, mockResponse, mockNext))
-            .rejects;
+          await expect(
+            getRepresentantes(mockRequest, mockResponse, mockNext)
+          ).resolves.toBeUndefined();
           expect(mockNext).toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
           expect(mockNext).toHaveBeenCalledTimes(1);
@@ -199,8 +200,9 @@ describe("representantes", () => {
             new Error()
           );
 
-          await expect(getRepresentante(mockRequest, mockResponse, mockNext))
-            .rejects;
+          await expect(
+            getRepresentante(mockRequest, mockResponse, mockNext)
+          ).resolves.toBeUndefined();
           expect(mockResponse.status).not.toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
@@ -233,8 +235,9 @@ describe("representantes", () => {
             new Error()
           );
 
-          await expect(postRepresentante(mockRequest, mockResponse, mockNext))
-            .rejects;
+          await expect(
+            postRepresentante(mockRequest, mockResponse, mockNext)
+          ).resolves.toBeUndefined();
           expect(mockResponse.status).not.toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
@@ -267,8 +270,9 @@ describe("representantes", () => {
             new Error()
           );
 
-          await expect(putRepresentante(mockRequest, mockResponse, mockNext))
-            .rejects;
+          await expect(
+            putRepresentante(mockRequest, mockResponse, mockNext)
+          ).resolves.toBeUndefined();
           expect(mockResponse.status).not.toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
@@ -304,8 +308,9 @@ describe("representantes", () => {
             new Error()
           );
 
-          await expect(deleteRepresentante(mockRequest, mockResponse, mockNext))
-            .rejects;
+          await expect(
+            deleteRepresentante(mockRequest, mockResponse, mockNext)
+          ).resolves.toBeUndefined();
           expect(mockResponse.status).not.toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalled();
           expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
