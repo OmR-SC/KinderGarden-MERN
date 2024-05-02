@@ -19,6 +19,11 @@ const {
   expectedRepresentante,
   expectedRepresentantes,
 } = require("../test_data");
+const {
+  ValidationTestStrategy,
+  TestContext,
+  ServiceErrorHandlingStrategy,
+} = require("./strategies/unitTestStrategy");
 
 const mockRequest = {
   params: { id: 1 },
@@ -64,62 +69,54 @@ jest.mock("express-validator", () => ({
 
 jest.mock("../../src/utils/handleValidator");
 
+const testContext = new TestContext();
+
 describe("representantes", () => {
   describe("validation middleware for representante's routes", () => {
-    jest.doMock("../../src/utils/handleValidator");
-
-    const { validateResult } = require("../../src/utils/handleValidator");
+    let validationTestStrategy;
+    beforeAll(() => {
+      validationTestStrategy = new ValidationTestStrategy();
+      testContext.setTestStrategy(validationTestStrategy);
+      testContext.setup();
+    });
 
     it("GET /representantes/:id should call validateResult function", () => {
-      validatorIdParameterRepresentante[1](mockRequest, mockResponse, mockNext);
-
-      expect(validateResult).toHaveBeenCalled();
-      expect(validateResult).toHaveBeenCalledTimes(1);
-      expect(validateResult).toHaveBeenCalledWith(
-        mockRequest,
-        mockResponse,
-        mockNext
+      validationTestStrategy.setValidationFunction(
+        validatorIdParameterRepresentante[1]
       );
+
+      testContext.run(mockRequest, mockResponse, mockNext);
     });
 
     it("POST /representantes/ should call validateResult function", () => {
-      validatorCreateRepresentante[10](mockRequest, mockResponse, mockNext);
-
-      expect(validateResult).toHaveBeenCalled();
-      expect(validateResult).toHaveBeenCalledTimes(1);
-      expect(validateResult).toHaveBeenCalledWith(
-        mockRequest,
-        mockResponse,
-        mockNext
+      validationTestStrategy.setValidationFunction(
+        validatorCreateRepresentante[10]
       );
+      testContext.run(mockRequest, mockResponse, mockNext);
     });
 
     it("PUT /representantes/:id should call validateResult function", () => {
-      validatorUpdateRepresentante[12](mockRequest, mockResponse, mockNext);
-
-      expect(validateResult).toHaveBeenCalled();
-      expect(validateResult).toHaveBeenCalledTimes(1);
-      expect(validateResult).toHaveBeenCalledWith(
-        mockRequest,
-        mockResponse,
-        mockNext
+      validationTestStrategy.setValidationFunction(
+        validatorUpdateRepresentante[12]
       );
+      testContext.run(mockRequest, mockResponse, mockNext);
     });
 
     it("DELETE /representantes/:id should call validateResult function", () => {
-      validatorIdParameterRepresentante[1](mockRequest, mockResponse, mockNext);
-
-      expect(validateResult).toHaveBeenCalled();
-      expect(validateResult).toHaveBeenCalledTimes(1);
-      expect(validateResult).toHaveBeenCalledWith(
-        mockRequest,
-        mockResponse,
-        mockNext
+      validationTestStrategy.setValidationFunction(
+        validatorIdParameterRepresentante[1]
       );
+
+      testContext.run(mockRequest, mockResponse, mockNext);
     });
   });
 
   describe("representantes controller", () => {
+    let serviceErrorHandlingStrategy;
+
+    beforeAll(() => {
+      serviceErrorHandlingStrategy = new ServiceErrorHandlingStrategy();
+    });
     describe("getRepresentantes", () => {
       describe("the service is working correctly", () => {
         it("should return all representantes", async () => {
@@ -157,17 +154,14 @@ describe("representantes", () => {
       });
 
       describe("the service is not working correctly", () => {
+        testContext.setTestStrategy(serviceErrorHandlingStrategy);
         it("should call the mockNext function with the error as an argument", async () => {
-          representanteService.getAllRepresentantes.mockRejectedValueOnce(
-            new Error()
+          serviceErrorHandlingStrategy.setControllerAndService(
+            getRepresentantes,
+            representanteService.getAllRepresentantes
           );
 
-          await expect(
-            getRepresentantes(mockRequest, mockResponse, mockNext)
-          ).resolves.toBeUndefined();
-          expect(mockNext).toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
-          expect(mockNext).toHaveBeenCalledTimes(1);
+          testContext.run(mockRequest, mockResponse, mockNext);
         });
       });
     });
@@ -195,18 +189,14 @@ describe("representantes", () => {
       });
 
       describe("the service has rejected the request", () => {
+        testContext.setTestStrategy(serviceErrorHandlingStrategy);
         it("should call the mockNext function with the error as an argument", async () => {
-          representanteService.getOneRepresentante.mockRejectedValueOnce(
-            new Error()
+          serviceErrorHandlingStrategy.setControllerAndService(
+            getRepresentante,
+            representanteService.getOneRepresentante
           );
 
-          await expect(
-            getRepresentante(mockRequest, mockResponse, mockNext)
-          ).resolves.toBeUndefined();
-          expect(mockResponse.status).not.toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
-          expect(mockNext).toHaveBeenCalledTimes(1);
+          testContext.run(mockRequest, mockResponse, mockNext);
         });
       });
     });
@@ -230,18 +220,14 @@ describe("representantes", () => {
         });
       });
       describe("given representante has been rejected by the service", () => {
+        testContext.setTestStrategy(serviceErrorHandlingStrategy);
         it("should call the mockNext function with the error as an argument", async () => {
-          representanteService.insertRepresentante.mockRejectedValueOnce(
-            new Error()
+          serviceErrorHandlingStrategy.setControllerAndService(
+            postRepresentante,
+            representanteService.insertRepresentante
           );
 
-          await expect(
-            postRepresentante(mockRequest, mockResponse, mockNext)
-          ).resolves.toBeUndefined();
-          expect(mockResponse.status).not.toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
-          expect(mockNext).toHaveBeenCalledTimes(1);
+          testContext.run(mockRequest, mockResponse, mockNext);
         });
       });
     });
@@ -265,18 +251,14 @@ describe("representantes", () => {
         });
       });
       describe("given representante has been rejected by the service", () => {
+        testContext.setTestStrategy(serviceErrorHandlingStrategy);
         it("should call the mockNext function with the error as an argument", async () => {
-          representanteService.updateRepresentante.mockRejectedValueOnce(
-            new Error()
+          serviceErrorHandlingStrategy.setControllerAndService(
+            putRepresentante,
+            representanteService.updateRepresentante
           );
 
-          await expect(
-            putRepresentante(mockRequest, mockResponse, mockNext)
-          ).resolves.toBeUndefined();
-          expect(mockResponse.status).not.toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
-          expect(mockNext).toHaveBeenCalledTimes(1);
+          testContext.run(mockRequest, mockResponse, mockNext);
         });
       });
     });
@@ -303,18 +285,14 @@ describe("representantes", () => {
       });
 
       describe("the service has rejected the request", () => {
+        testContext.setTestStrategy(serviceErrorHandlingStrategy);
         it("should call the mockNext function with the error as an argument", async () => {
-          representanteService.removeRepresentante.mockRejectedValueOnce(
-            new Error()
+          serviceErrorHandlingStrategy.setControllerAndService(
+            deleteRepresentante,
+            representanteService.removeRepresentante
           );
 
-          await expect(
-            deleteRepresentante(mockRequest, mockResponse, mockNext)
-          ).resolves.toBeUndefined();
-          expect(mockResponse.status).not.toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalled();
-          expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
-          expect(mockNext).toHaveBeenCalledTimes(1);
+          testContext.run(mockRequest, mockResponse, mockNext);
         });
       });
     });
@@ -389,7 +367,7 @@ describe("representantes", () => {
       });
     });
 
-    describe("getRepresentante", () => {
+    describe("getOneRepresentante", () => {
       describe("the prisma ORM has accepted the request", () => {
         it("should return the representante", async () => {
           prisma.representantes.findUniqueOrThrow.mockResolvedValueOnce(
@@ -455,7 +433,7 @@ describe("representantes", () => {
         });
       });
     });
-    describe("create a representante", () => {
+    describe("insertRepresentante", () => {
       describe("given representante has been accepted by the ORM", () => {
         it("should create the representante", async () => {
           prisma.representantes.create.mockResolvedValueOnce(
@@ -519,7 +497,7 @@ describe("representantes", () => {
         });
       });
     });
-    describe("update a representante", () => {
+    describe("updateRepresentante", () => {
       describe("given representante has been accepted by the ORM", () => {
         it("should update the representante", async () => {
           prisma.representantes.update.mockResolvedValueOnce(
