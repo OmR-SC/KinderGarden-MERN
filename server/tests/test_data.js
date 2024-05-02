@@ -1,6 +1,5 @@
 //Representantes
 
-
 const representanteId = 5;
 const representantePayload = {
   Representante_id: representanteId,
@@ -49,7 +48,6 @@ const expectedRepresentante = expect.objectContaining({
   Telefono_id: expect.any(String),
   patrocinador: expect.arrayContaining([
     expect.objectContaining({
-      //Pagante_id: expect.any(Number),
       Infantes_id: expect.any(Number),
       Cuenta: expect.any(String),
     }),
@@ -57,7 +55,6 @@ const expectedRepresentante = expect.objectContaining({
   relacionparentesco: expect.arrayContaining([
     expect.objectContaining({
       Infante_id: expect.any(Number),
-      //Representante_id: expect.any(Number),
       tipoParentesco: expect.any(Number),
     }),
   ]),
@@ -76,7 +73,6 @@ const expectedRepresentantes = expect.arrayContaining([
     Telefono_id: expect.any(String),
     patrocinador: expect.arrayContaining([
       expect.objectContaining({
-        //Pagante_id: expect.any(Number),
         Infantes_id: expect.any(Number),
         Cuenta: expect.any(String),
       }),
@@ -84,7 +80,6 @@ const expectedRepresentantes = expect.arrayContaining([
     relacionparentesco: expect.arrayContaining([
       expect.objectContaining({
         Infante_id: expect.any(Number),
-        //Representante_id: expect.any(Number),
         tipoParentesco: expect.any(Number),
       }),
     ]),
@@ -92,9 +87,9 @@ const expectedRepresentantes = expect.arrayContaining([
 ]);
 
 module.exports = {
-    representanteId,
-    representantePayload,
-    initialrepresentantePayload,
-    expectedRepresentante,
-    expectedRepresentantes,
-  };
+  representanteId,
+  representantePayload,
+  initialrepresentantePayload,
+  expectedRepresentante,
+  expectedRepresentantes,
+};
