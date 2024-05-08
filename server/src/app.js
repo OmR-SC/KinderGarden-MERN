@@ -1,10 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const path = require("path");
 const { errorHandlingAfterRoute } = require("./middlewares/error-handler.js");
 
 const reprsentantesRoutes = require("./v1/routes/representantesRoutes.js");
 
+let envFile = `.env.${process.env.NODE_ENV}`;
+
+dotenv.config({
+  path: path.resolve(__dirname, envFile),
+});
+
+console.log(process.env.DATABASE_URL);
 const app = express();
 
 //Middlewares

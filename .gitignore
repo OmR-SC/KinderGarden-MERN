@@ -29,6 +29,17 @@ dist-ssr
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+.env.development
+.env.test
+
 
 # production
 build
+.npmrc
+#docker-compose.yml
+#docker-compose-production.yml
+#docker-compose-development.yml
+
+
+

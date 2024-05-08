@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mysql_test_db:
+    image: mysql:8
+    container_name: mysql-kindergarten-test_c
+    restart: always
+    env_file:
+      - ./server/.env.test
+    ports:
+      - "3307"
+    networks:
+      - backend-network
+    volumes:
+        - testdata:/var/lib/mysql
+
+  server:
+    container_name: backend-kindergarten-test_c
+    restart: unless-stopped
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.test
+    env_file:
+      - ./server.env.test
+    environment:
+      - NODE_ENV=test
+    depends_on:
+      - mysql_test_db
+    ports:
+      - "3001"
+    networks:
+      - backend-network
+      - frontend-network
+    secrets:
+      - npmrc
+
+networks:
+  backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
+volumes: 
+  testdata:
+    driver: local
+secrets:
+  npmrc:
+    file: .npmrc

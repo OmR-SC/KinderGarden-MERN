@@ -2,6 +2,9 @@
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
  */
+const path = require("path");
+let envFile = `.env.test`;
+require("dotenv").config({ path: path.resolve(__dirname, envFile) });
 
 /** @type {import('jest').Config} */
 const config = {

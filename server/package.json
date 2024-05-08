@@ -4,9 +4,11 @@
   "description": "A kindergarten platform",
   "main": "index.js",
   "scripts": {
+    "prisma:dev" : "cross-env NODE_ENV=test dotenv -e .env.test -- prisma migrate dev --name test_migration",
+    "prisma:deploy" : "cross-env NODE_ENV=test dotenv -e .env.test -- prisma migrate deploy --preview-feature",
     "test": "cross-env NODE_ENV=test jest",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "start": "cross-env NODE_ENV=production src/index.js"
+    "dev": "cross-env NODE_ENV=development node -r dotenv/config src/index.js dotenv_config_path=.env.development",
+    "start:production": "NODE_ENV=production node -r dotenv/config src/index.js dotenv_config_path=.env.production"
   },
   "author": "Omar Sanchez Cuevas",
   "license": "ISC",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
+    "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "nodemon": "^3.1.0",
     "prisma": "^5.10.2",
