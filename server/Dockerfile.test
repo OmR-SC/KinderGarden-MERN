@@ -4,8 +4,9 @@ FROM node:20 AS build
 RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
 WORKDIR /usr/src/app
 COPY package*.json /usr/src/app/
-RUN --mount=type=secret,mode=0644,id=npmrc,target=/usr/src/app/.npmrc npm install \ npm install -g dotenv-cli
-
+COPY prisma ./prisma/
+RUN --mount=type=secret,mode=0644,id=npmrc,target=/usr/src/app/.npmrc npm install
+RUN npx prisma generate
 
 # stage 2: Test image
 FROM node:20.12.2-bullseye-slim
@@ -18,8 +19,4 @@ COPY --chown=node:node --from=build /usr/src/app/node_modules /usr/src/app/node_
 
 COPY --chown=node:node . /usr/src/app
 
-RUN npx prisma generate
-RUN npx prisma migrate dev --name init_test
-RUN npx prisma migrate deploy
-
-CMD ["dumb-init", "npm","run" "test"]
+CMD ["dumb-init", "npm","run", "test:migrate"]

@@ -4,9 +4,11 @@
   "description": "A kindergarten platform",
   "main": "index.js",
   "scripts": {
-    "prisma:dev" : "cross-env NODE_ENV=test dotenv -e .env.test -- prisma migrate dev --name test_migration",
-    "prisma:deploy" : "cross-env NODE_ENV=test dotenv -e .env.test -- prisma migrate deploy --preview-feature",
+    "prisma:dev": "cross-env NODE_ENV=test dotenv -e .env.development -- prisma migrate dev --name test_migration",
+    "prisma:deploy": "cross-env NODE_ENV=test dotenv -e .env.development -- prisma migrate deploy --preview-feature",
     "test": "cross-env NODE_ENV=test jest",
+    "test:migrate": "prisma migrate deploy --preview-feature && npm run test",
+
     "dev": "cross-env NODE_ENV=development node -r dotenv/config src/index.js dotenv_config_path=.env.development",
     "start:production": "NODE_ENV=production node -r dotenv/config src/index.js dotenv_config_path=.env.production"
   },
@@ -16,6 +18,7 @@
     "@prisma/client": "^5.10.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "express": "^4.18.3",
     "express-validator": "^7.0.1",
     "swagger-jsdoc": "^6.2.8",
